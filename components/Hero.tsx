@@ -1,14 +1,150 @@
+"use client";
+
 import HeroCover from "./hero/HeroCover";
+import React from "react";
 
 type Props = {
   imageSrc?: string; // e.g., "/images/your-cover.jpg"
 };
 
 export default function Hero({ imageSrc = "/images/hero-cover.jpg" }: Props) {
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [title, setTitle] = React.useState("Airwave");
+  const [subtitle, setSubtitle] = React.useState("Welcome to my podcast");
+  const [isEditingSubtitle, setIsEditingSubtitle] = React.useState(false);
+  const [coverImage, setCoverImage] = React.useState(imageSrc);
+
+  const handleTitleClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleTitleBlur = async () => {
+    setIsEditing(false);
+    // Save the updated title to the API
+    try {
+      await fetch('/api/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: title
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to update title:', error);
+    }
+  };
+
+  const handleTitleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setIsEditing(false);
+      // Save the updated title to the API
+      try {
+        await fetch('/api/update', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: title
+          }),
+        });
+      } catch (error) {
+        console.error('Failed to update title:', error);
+      }
+    }
+    if (e.key === "Escape") {
+      setTitle("Airwave");
+      setIsEditing(false);
+    }
+  };
+
+  const handleSubtitleClick = () => {
+    setIsEditingSubtitle(true);
+  };
+
+  const handleSubtitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSubtitle(e.target.value);
+  };
+
+  const handleSubtitleBlur = async () => {
+    setIsEditingSubtitle(false);
+    // Save the updated subtitle to the API
+    try {
+      await fetch('/api/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: subtitle
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to update subtitle:', error);
+    }
+  };
+
+  const handleSubtitleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setIsEditingSubtitle(false);
+      // Save the updated subtitle to the API
+      try {
+        await fetch('/api/update', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: subtitle
+          }),
+        });
+      } catch (error) {
+        console.error('Failed to update subtitle:', error);
+      }
+    }
+    if (e.key === "Escape") {
+      setSubtitle("Welcome to my podcast");
+      setIsEditingSubtitle(false);
+    }
+  };
+
+  // Fetch profile data on component mount
+  React.useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch('/profile');
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Update state with fetched data
+          if (data.name) {
+            setTitle(data.name);
+          }
+          if (data.subtitle) {
+            setSubtitle(data.subtitle);
+          }
+          if (data.coverImage) {
+            setCoverImage(data.coverImage);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch profile data:', error);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
   return (
     <section className="relative mb-8 overflow-hidden text-white">
       {/* Cover background */}
-      <HeroCover imageSrc={imageSrc} height={360} />
+      <HeroCover imageSrc={coverImage} height={360} />
 
       {/* Top-left Home chip */}
       <div className="absolute left-4 top-4 z-10">
@@ -31,10 +167,42 @@ export default function Hero({ imageSrc = "/images/hero-cover.jpg" }: Props) {
             <span className="pointer-events-none absolute inset-0 rounded-full ring-[5px] ring-white/95" />
           </div>
           <div className="pt-2">
-            <h1 className="text-3xl font-semibold tracking-tight drop-shadow-sm md:text-4xl">Airwave</h1>
-            <p className="mt-2 inline-block rounded-md border border-white/30 bg-white/10 px-3 py-1 text-xs text-white/90 backdrop-blur">
-              Welcome to my podcast
-            </p>
+            {isEditing ? (
+              <input
+                type="text"
+                value={title}
+                onChange={handleTitleChange}
+                onBlur={handleTitleBlur}
+                onKeyDown={handleTitleKeyDown}
+                className="w-full text-3xl font-semibold tracking-tight drop-shadow-sm md:text-4xl bg-transparent text-white border-none outline-none focus:ring-0"
+                autoFocus
+              />
+            ) : (
+              <h1 
+                className="text-3xl font-semibold tracking-tight drop-shadow-sm md:text-4xl cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={handleTitleClick}
+              >
+                {title}
+              </h1>
+            )}
+            {isEditingSubtitle ? (
+              <input
+                type="text"
+                value={subtitle}
+                onChange={handleSubtitleChange}
+                onBlur={handleSubtitleBlur}
+                onKeyDown={handleSubtitleKeyDown}
+                className="mt-2 w-full rounded-md border border-white/30 bg-white/10 px-3 py-1 text-xs text-white/90 backdrop-blur bg-transparent text-white border-none outline-none focus:ring-0"
+                autoFocus
+              />
+            ) : (
+              <p 
+                className="mt-2 inline-block rounded-md border border-white/30 bg-white/10 px-3 py-1 text-xs text-white/90 backdrop-blur cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={handleSubtitleClick}
+              >
+                {subtitle}
+              </p>
+            )}
           </div>
         </div>
       </div>
