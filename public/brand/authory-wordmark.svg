@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="40" viewBox="0 0 160 40" fill="none">
+  <g fill="#85A8FF">
+    <circle cx="16" cy="20" r="12" stroke="#85A8FF" stroke-width="3" fill="none"/>
+    <path d="M16 12l-4 10h8l-4-10z" fill="#85A8FF"/>
+    <text x="36" y="26" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="1.5" fill="#85A8FF">AUTHORY</text>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 64 64" fill="none">
+  <!-- Mic body -->
+  <rect x="25" y="12" width="14" height="24" rx="7" ry="7" stroke="#0A0A0A" stroke-width="3" fill="#ffffff"/>
+  <!-- Sound ring (teal accent) -->
+  <path d="M18 28a14 14 0 0 0 28 0" stroke="#00C2B4" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Mic stand -->
+  <path d="M32 40v8" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M22 52h20" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round"/>
+  <!-- Outline shadow -->
+  <circle cx="32" cy="32" r="30" stroke="#E5E7EB" stroke-width="2" fill="none"/>
+</svg>
